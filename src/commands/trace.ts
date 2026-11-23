@@ -28,9 +28,15 @@ function printOutcome(direction: "callers" | "callees", functionName: string, ou
   }
   if (outcome.results.length === 0) {
     console.log(`No ${direction} found for "${functionName}".`);
-    return;
   }
   for (const r of outcome.results) {
     console.log(`${r.functionName}  ${r.file}:${r.startLine}-${r.endLine}`);
+  }
+  if (outcome.unresolved.length > 0) {
+    const heading = direction === "callers" ? `Possible callers (unresolved calls ending in "${functionName}"):` : "Unresolved calls (not followed):";
+    console.log(`\n${heading}`);
+    for (const u of outcome.unresolved) {
+      console.log(`  ${u.calleeText}  in ${u.inFunction}  ${u.file}:${u.line}`);
+    }
   }
 }
