@@ -17,7 +17,13 @@ export function walkSourceFiles(rootDir: string, excludeDirs: Set<string> = DEFA
     }
     for (const entry of entries) {
       const full = join(dir, entry);
-      const stat = statSync(full);
+      let stat;
+      try {
+        stat = statSync(full);
+      } catch {
+        // Broken symlink, permission error or a file removed mid-walk: skip it rather than abort the scan.
+        continue;
+      }
       if (stat.isDirectory()) {
         if (!excludeDirs.has(entry)) stack.push(full);
       } else if (SOURCE_EXTENSIONS.has(extname(entry))) {
