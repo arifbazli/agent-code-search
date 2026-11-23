@@ -4,7 +4,7 @@ export const ConfigSchema = z.object({
   version: z.literal(1),
   provider: z.literal("ollama"),
   model: z.string().min(1).default("nomic-embed-text"),
-  ollama: z.object({ baseUrl: z.string().url() }).default({ baseUrl: "http://localhost:11434" }),
+  ollama: z.object({ baseUrl: z.url() }).default({ baseUrl: "http://localhost:11434" }),
   backend: z.literal("json").default("json"),
   index: z
     .object({

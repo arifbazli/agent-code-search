@@ -23,7 +23,7 @@ export function createServer(dir: string): McpServer {
     "trace_callers",
     {
       title: "Trace callers",
-      description: "AST-based (tree-sitter) callers of a named function — not regex, so it correctly follows arrow functions, namespace-import indirection, and class methods.",
+      description: "AST-based (tree-sitter) callers of a named function — not regex, so it correctly follows arrow functions, namespace-import indirection, and class methods. `unresolved` lists unresolved call sites whose final name matches — possible callers the resolver couldn't confirm.",
       inputSchema: { functionName: z.string().min(1), file: z.string().optional() },
     },
     async ({ functionName, file }) => ({
@@ -35,7 +35,7 @@ export function createServer(dir: string): McpServer {
     "trace_callees",
     {
       title: "Trace callees",
-      description: "AST-based (tree-sitter) callees of a named function — what it calls.",
+      description: "AST-based (tree-sitter) callees of a named function — what it calls. `unresolved` lists calls inside it that couldn't be resolved (dynamic dispatch, node_modules, barrel re-exports).",
       inputSchema: { functionName: z.string().min(1), file: z.string().optional() },
     },
     async ({ functionName, file }) => ({
