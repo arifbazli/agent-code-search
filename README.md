@@ -2,25 +2,10 @@
 
 Local semantic code search and call-graph tracing for AI coding agents, served as a CLI and an MCP server. Your code never leaves your machine.
 
-```mermaid
-flowchart LR
-    agent["Coding agent<br/>Claude Code, Copilot, Cursor, ..."]
-
-    subgraph tool["semantic-index"]
-        direction TB
-        cli["CLI"]
-        mcp["MCP server (stdio)"]
-        engine["Search + trace engine"]
-        cli --> engine
-        mcp --> engine
-    end
-
-    agent -- "shell" --> cli
-    agent -- "MCP" --> mcp
-    engine -- "embeddings" --> ollama[("Ollama<br/>nomic-embed-text")]
-    engine -- "AST parse" --> ts["tree-sitter"]
-    engine <-- "read / write" --> index[(".semantic-index/")]
-```
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/architecture-dark.svg">
+  <img alt="Architecture: a coding agent calls semantic-index over MCP or the shell. Both surfaces share one engine for search and call-graph tracing, backed by a local Ollama model, tree-sitter and a local index. Everything runs on your machine." src="docs/assets/architecture-light.svg" width="100%">
+</picture>
 
 - **`search "<query>"`** finds code by meaning, not keywords.
 - **`trace callers|callees <name>`** walks a real AST call graph, including arrow functions, namespace imports and `this.method()`. Calls the tool can't resolve are listed as `unresolved`, never silently dropped.
